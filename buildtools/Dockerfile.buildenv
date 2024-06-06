@@ -1,0 +1,60 @@
+# syntax=docker/dockerfile:experimental
+
+FROM ubuntu:focal
+LABEL version="0.0.1"
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y \
+        autoconf \
+        build-essential \
+        clang-format \
+        cmake \
+	curl \
+        docker.io \
+	g++ \
+        git \
+        git-lfs \
+        jq \
+        libtool \
+        libusb-1.0 \
+        lsb-release \
+        make \
+        python3-pip \
+        sudo \
+	unzip \
+        wget && \
+        apt-get clean all && \
+            rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install \
+        pyyaml
+
+# bazel
+ARG BAZEL_ARCH
+ENV BAZEL_VER 7.1.0
+RUN wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VER}/bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} && \
+    chmod +x bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} && \
+    mv bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} /usr/local/bin/bazel
+
+# Add "this" user to buildenv image
+ARG USER
+ARG GROUP
+ARG UID
+ARG GID
+RUN if [ $UID != 0 ]; then \
+        if [ "$USER" != "$GROUP" ]; then \
+            useradd --create-home -u $UID -g $GROUP $USER; \
+        else \
+            useradd --create-home -u $UID $USER; \
+        fi && \
+        echo "$USER ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/$USER;  \
+    fi;
+
+# Propagate host's docker guid
+ARG DOCKER_GID
+RUN if [ -n "$DOCKER_GID" ]; then \
+        groupmod docker -g $DOCKER_GID; \
+    fi && \
+    usermod -aG docker $USER

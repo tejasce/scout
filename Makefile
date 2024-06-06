@@ -8,12 +8,49 @@ endif
 SHELL := $(shell which bash)
 
 #
+# Include helper makefiles
+#
+include $(TOPDIR)/buildtools/Makefile.buildenv
+
+#
+# Bazel build options
+#
+BUILD ?= debug
+BAZEL_OPTS :=
+BAZEL_CMD := $(BUILDENV_C) bazel $(BAZEL_OPTS)
+BAZEL_BUILD_OPTS := --config=$(BUILD)
+BAZEL_BUILD_CMD := $(BAZEL_CMD) build $(BAZEL_BUILD_OPTS)
+
+#
+# Basic targets to invoke bazel
+#
+all: startenv
+	@$(BAZEL_BUILD_CMD) :all
+
+clean: startenv
+	@$(BAZEL_CMD) clean --expunge 2>/dev/null || true
+
+clobber: clean
+	@rm -rf $(OBJS) cscope.* tags
+
+#
 # Apply clang-format to new+modified src files.
 #
 format:
-	@git diff -U0 --no-color | $(TOPDIR)buildtools/clang-format-diff.py -p1
+	@git diff -U0 --no-color HEAD^ | $(TOPDIR)/buildtools/clang-format-diff.py -p1 -i
+
+.DEFAULT_GOAL := all
 
 help:
 	@echo "Build Targets"
+	@echo "          all: build all $(ARCH) products (default)"
+	@echo "        clean: remove all previously built $(ARCH) products"
+	@echo "      clobber: cleanall + remove cscope/ctags"
 	@echo "       format: run 'clang-format' on new+modified files on this branch"
 	@echo "         help: show this message"
+	@echo
+	@$(MAKE) --no-print-directory help.buildenv
+	@echo
+	@echo "Commmand-line overrides"
+	@echo "      DRY_RUN: perform dry-run but do not apply changes"
+	@echo "               tgts: format"
