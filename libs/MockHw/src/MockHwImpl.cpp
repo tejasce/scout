@@ -3,8 +3,8 @@
 MockHwImpl::MockHwImpl() {
     // There would be a file level construct here that would
     // prevent multiple processes to instantiate MockHw object
-    // at run time. For example, a char device that can be
-    // acquired/opened by only one process at a time
+    // simultaneously at run time. For example, a char device
+    // that can be acquired/opened by only one process at a time
 }
 
 MockHwImpl::~MockHwImpl() {
