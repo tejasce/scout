@@ -3,12 +3,9 @@
 
 using namespace std;
 
-MockHw::MockHw() {
-    mock_hw_impl_ = make_unique<MockHwImpl>();
-}
+MockHw::MockHw() { mock_hw_impl_ = make_unique<MockHwImpl>(); }
 
-MockHw::~MockHw() {
-}
+MockHw::~MockHw() {}
 
 int MockHw::GetSpeed() { return mock_hw_impl_->GetSpeed(); }
 

@@ -24,6 +24,7 @@ RUN apt-get update && \
         python3-pip \
         sudo \
 	unzip \
+        vim \
         wget && \
         apt-get clean all && \
             rm -rf /var/lib/apt/lists/*
