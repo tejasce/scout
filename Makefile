@@ -40,6 +40,11 @@ clobber: clean
 format:
 	@git diff -U0 --no-color HEAD^ | $(TOPDIR)/buildtools/clang-format-diff.py -p1 -i
 
+tidy:
+	@bazel build //... \
+	--aspects @bazel_clang_tidy//clang_tidy:clang_tidy.bzl%clang_tidy_aspect \
+	--output_groups=report
+
 .DEFAULT_GOAL := all
 
 help:
@@ -48,6 +53,7 @@ help:
 	@echo "        clean: remove all previously built $(ARCH) products"
 	@echo "      clobber: cleanall + remove cscope/ctags"
 	@echo "       format: run 'clang-format' on new+modified files on this branch"
+	@echo "         tidy: run 'clang-tidy' on all cpp files in TOPDIR"
 	@echo "         help: show this message"
 	@echo
 	@$(MAKE) --no-print-directory help.buildenv

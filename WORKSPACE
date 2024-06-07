@@ -10,8 +10,19 @@ http_archive(
     strip_prefix = "json-3.11.3",
 )
 
+
+## clang-tidy bazel integration off of internet
+## https://github.com/erenon/bazel_clang_tidy
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+git_repository(
+       name = "bazel_clang_tidy",
+       commit = "43bef6852a433f3b2a6b001daecc8bc91d791b92",
+       remote = "https://github.com/erenon/bazel_clang_tidy.git",
+)
+
 #
 # https://stackoverflow.com/questions/73542982/bazel-protobuf-how-to-choose-a-specific-protoc-version
+# Makefile intergration example: https://bitbucket.org/xyyk/grpc-example/src/master/
 #
 ## protocolbuffers v26.1 (from gRPC v1.61.1) points to following version of rules_proto:
 ##  https://github.com/protocolbuffers/protobuf/blob/2434ef2adf0c74149b9d547ac5fb545a1ff8b6b5/protobuf_deps.bzl#L86
