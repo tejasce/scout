@@ -1,12 +1,10 @@
 # nlohmann json
 
-licenses(["notice"])
-exports_files(["LICENSE.MIT"])
+package(default_visibility = ["//visibility:public"])
+licenses(["notice"]) # MIT license
 
 cc_library(
     name = "main",
-    hdrs = glob(["include/**/*.hpp"]),
-    includes = ["include"],
-    linkstatic = 1,
-    visibility = ["//visibility:public"],
+    hdrs = ["single_include/nlohmann/json.hpp"],
+    strip_include_prefix = "single_include/",
 )

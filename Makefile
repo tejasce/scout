@@ -6,6 +6,7 @@ ifeq ($(TOPDIR),)
 $(error "Not a git repository.")
 endif
 SHELL := $(shell which bash)
+OBJS := $(TOPDIR)/.objs
 
 #
 # Include helper makefiles
@@ -16,7 +17,7 @@ include $(TOPDIR)/buildtools/Makefile.buildenv
 # Bazel build options
 #
 BUILD ?= debug
-BAZEL_OPTS :=
+BAZEL_OPTS := --output_user_root=$(OBJS)
 BAZEL_CMD := $(BUILDENV_C) bazel $(BAZEL_OPTS)
 BAZEL_BUILD_OPTS := --config=$(BUILD)
 BAZEL_BUILD_CMD := $(BAZEL_CMD) build $(BAZEL_BUILD_OPTS)
