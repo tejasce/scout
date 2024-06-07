@@ -1,5 +1,5 @@
 # Global flags
-build --cxxopt="-Wall" --cxxopt="-Wextra" --cxxopt="-Wpedantic" --action_env=BAZEL_CXXOPTS=-std=c++17
+build --cxxopt=-std=c++17 --host_cxxopt=-std=c++17
 # Release vs Debug
 build:debug   --cxxopt="-DDEBUG" --copt="-DDEBUG" --strip=never
 build:release --cxxopt="-O3" --copt="-O3"
