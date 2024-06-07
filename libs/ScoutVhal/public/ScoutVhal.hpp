@@ -19,6 +19,8 @@ class ScoutVhal {
 
     int SetSpeed(uint8_t speed_kmh);
 
+    void UnsetSpeed();
+
    private:
     std::unique_ptr<ScoutVhalImpl> scout_vhal_impl_;
 };

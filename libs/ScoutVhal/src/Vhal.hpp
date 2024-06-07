@@ -7,4 +7,6 @@ class Vhal {
     virtual int GetHistoricSpeed(uint64_t timestamp, uint8_t &speed_kmh) = 0;
 
     virtual int SetSpeed(uint8_t speed_kmh) = 0;
+
+    virtual void UnsetSpeed() = 0;
 };

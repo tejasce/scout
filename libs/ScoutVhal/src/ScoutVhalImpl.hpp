@@ -20,6 +20,8 @@ class ScoutVhalImpl : public Vhal {
 
     int SetSpeed(uint8_t speed_kmh) override;
 
+    void UnsetSpeed() override;
+
    private:
     uint64_t now_seconds() {
         using namespace std;

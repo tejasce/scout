@@ -71,4 +71,6 @@ int ScoutVhalImpl::SetSpeed(uint8_t speed_kmh) {
     return 0;
 }
 
+void ScoutVhalImpl::UnsetSpeed() { mock_hw_.UnsetSpeed(); }
+
 }  // namespace scout
