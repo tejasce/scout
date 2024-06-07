@@ -18,3 +18,14 @@ cc_library(
     strip_include_prefix = "public",
     visibility = ["//visibility:public"],
 )
+
+cc_test(
+    name = "scout_vhal_test",
+    srcs = [
+        "test/ScoutVhal_Test.cpp",
+    ],
+    deps = [
+        ":scout_vhal",
+        "@googletest//:gtest_main",
+    ],
+)

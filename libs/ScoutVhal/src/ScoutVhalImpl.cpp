@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdint>
 #include <fstream>
+#include <iostream>
 #include <string>
 
 #include "ScoutVhalImpl.hpp"
@@ -19,7 +20,7 @@ using namespace std;
  * }
  */
 ScoutVhalImpl::ScoutVhalImpl() {
-    ifstream file(CC_JSON_FILE, ifstream::in);
+    ifstream file(CC_JSON_FILE);
 
     // If history exist, load it in memory for retrieval+update
     if (file.good()) {
@@ -38,8 +39,9 @@ ScoutVhalImpl::ScoutVhalImpl() {
 
 ScoutVhalImpl::~ScoutVhalImpl() {
     // Update the data on the disk upon exit
-    ofstream file(CC_JSON_FILE, ofstream::out);
-    file << cc_json_.dump();
+    ofstream file(CC_JSON_FILE);
+    file << cc_json_;  // FIXME(tejas): for some reason, this does flush to disk
+    // cout << cc_json_ << endl;
 }
 
 int ScoutVhalImpl::GetSpeed(uint8_t &speed_kmh) {

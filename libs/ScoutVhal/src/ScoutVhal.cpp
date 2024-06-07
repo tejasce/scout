@@ -15,5 +15,11 @@ int ScoutVhal::GetSpeed(uint8_t& speed_kmh) { return scout_vhal_impl_->GetSpeed(
 
 int ScoutVhal::SetSpeed(uint8_t speed_kmh) { return scout_vhal_impl_->SetSpeed(speed_kmh); }
 
+int ScoutVhal::GetHistoricSpeed(uint64_t timestamp, uint8_t& speed_kmh) {
+    return scout_vhal_impl_->GetHistoricSpeed(timestamp, speed_kmh);
+}
+
+void ScoutVhal::UnsetSpeed() { scout_vhal_impl_->UnsetSpeed(); }
+
 }  // namespace vhal
 }  // namespace scout

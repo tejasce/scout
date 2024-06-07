@@ -10,6 +10,15 @@ http_archive(
     strip_prefix = "json-3.11.3",
 )
 
+http_archive(
+    name = "googletest",
+    urls = [
+        "https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz",
+    ],
+    build_file = "@//third_party:gmock.BUILD",
+    strip_prefix = "googletest-1.14.0",
+)
+
 
 ## clang-tidy bazel integration off of internet
 ## https://github.com/erenon/bazel_clang_tidy

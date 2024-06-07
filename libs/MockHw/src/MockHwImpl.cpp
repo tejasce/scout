@@ -18,7 +18,7 @@ MockHwImpl::~MockHwImpl() {
 }
 
 int MockHwImpl::GetSpeed(uint8_t &speed_kmh) {
-    if (mode_ == Mode::Default) {
+    if (mode_ == DriveMode::Default) {
         speed_kmh = GetRandomSpeed();
     } else {
         speed_kmh = current_speed_;
@@ -31,12 +31,12 @@ int MockHwImpl::SetSpeed(uint8_t speed_kmh) {
     if (speed_kmh > MOCKHW_MAX_SPEED) {
         return -EINVAL;
     }
-    mode_ = Mode::Cruise;
+    mode_ = DriveMode::Cruise;
     current_speed_ = speed_kmh;
     return 0;
 }
 
-void MockHwImpl::UnsetSpeed() { mode_ = Mode::Default; }
+void MockHwImpl::UnsetSpeed() { mode_ = DriveMode::Default; }
 
 uint8_t MockHwImpl::GetRandomSpeed() {
     uint8_t rand_speed = 0;
