@@ -1,13 +1,19 @@
 #pragma once
 
+#include <chrono>
 #include <nlohmann/json.hpp>
+#include <string>
 
 #include "MockHw.hpp"
 #include "TimestampIndex.hpp"
 #include "Vhal.hpp"
 
 namespace scout {
+namespace vhal {
 
+/*
+ * This class implements VHAL interface for Scout
+ */
 class ScoutVhalImpl : public Vhal {
    public:
     ScoutVhalImpl();
@@ -25,12 +31,17 @@ class ScoutVhalImpl : public Vhal {
    private:
     uint64_t now_seconds() {
         using namespace std;
-        // use monotonic (vs system_clock which can be adjusted and hence may not be suitable for measuring intervals)
-        return chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now().time_since_epoch()).count();
+        // using system_clock with assumption that it is steady and doesn't jitter or fluctuate too much
+        // after this library is loaded
+        return chrono::duration_cast<chrono::seconds>(chrono::system_clock::now().time_since_epoch()).count();
     }
 
+    // Assumption: Save the history of cruise control till the system
+    // is restarted in order to limit the size of the history
+    const std::string CC_JSON_FILE = "/tmp/cruise_control_history.json";
+
     // For MockHw interface
-    MockHw mock_hw_{};
+    mock_hw::MockHw mock_hw_{};
 
     // For book-keeping
     nlohmann::json cc_json_{};
@@ -38,4 +49,5 @@ class ScoutVhalImpl : public Vhal {
     uint32_t entry_count_ = 0;
 };
 
+}  // namespace vhal
 }  // namespace scout

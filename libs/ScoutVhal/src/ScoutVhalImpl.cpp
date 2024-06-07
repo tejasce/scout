@@ -5,15 +5,13 @@
 
 #include "ScoutVhalImpl.hpp"
 
-// Assumption: Save the history of cruise control till the system
-// is restarted in order to limit the size of the history
-#define CC_JSON_FILE "/tmp/cruise_control_history.json"
-
 namespace scout {
+namespace vhal {
 
 using namespace std;
 
 /*
+ * Example CC_JSON_FILE
  * {
  *  "entry0" : { "timestamp": <number>, "speed_kmh": <number> },
  *  "entry1" : { "timestamp": <number>, "speed_kmh": <number> },
@@ -73,4 +71,5 @@ int ScoutVhalImpl::SetSpeed(uint8_t speed_kmh) {
 
 void ScoutVhalImpl::UnsetSpeed() { mock_hw_.UnsetSpeed(); }
 
+}  // namespace vhal
 }  // namespace scout

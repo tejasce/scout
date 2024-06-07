@@ -1,6 +1,10 @@
+#include <errno.h>
 #include <stdlib.h>
 
 #include "MockHwImpl.hpp"
+
+namespace scout {
+namespace mock_hw {
 
 MockHwImpl::MockHwImpl() {
     // There would be a file level construct here that would
@@ -23,6 +27,10 @@ int MockHwImpl::GetSpeed(uint8_t &speed_kmh) {
 }
 
 int MockHwImpl::SetSpeed(uint8_t speed_kmh) {
+    // Can't cruise control at > 160 kmh
+    if (speed_kmh > MOCKHW_MAX_SPEED) {
+        return -EINVAL;
+    }
     mode_ = Mode::Cruise;
     current_speed_ = speed_kmh;
     return 0;
@@ -34,7 +42,10 @@ uint8_t MockHwImpl::GetRandomSpeed() {
     uint8_t rand_speed = 0;
     do {
         rand_speed = static_cast<uint8_t>(rand() & 0xff);
-    } while (rand_speed == 0 || rand_speed > 160);  // arbitrary lower and upper bounds
+    } while (rand_speed == MOCKHW_MIN_SPEED || rand_speed > MOCKHW_MAX_SPEED);
 
     return rand_speed;
 }
+
+}  // namespace mock_hw
+}  // namespace scout
