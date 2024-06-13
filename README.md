@@ -4,7 +4,7 @@ Overview
 This repo is an attempt to design and document requirements as described
 [here](docs/Take-home_interview_embedded_engineer_interview_-_May_2024.pdf)
 
-Buidling
+Building
 --------
 
 The cpp deliverables are built using bazel and its in-built rules. The repo
