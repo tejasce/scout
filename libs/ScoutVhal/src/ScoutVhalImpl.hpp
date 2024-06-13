@@ -29,11 +29,11 @@ class ScoutVhalImpl : public Vhal {
     void UnsetSpeed() override;
 
    private:
-    uint64_t now_seconds() {
-        using namespace std;
+    uint64_t now_us() {
+        using namespace std::chrono;
         // using system_clock with assumption that it is steady and doesn't jitter or fluctuate too much
         // after this library is loaded
-        return chrono::duration_cast<chrono::seconds>(chrono::system_clock::now().time_since_epoch()).count();
+        return duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();
     }
 
     // Assumption: Save the history of cruise control till the system

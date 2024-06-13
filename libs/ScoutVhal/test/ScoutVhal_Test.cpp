@@ -72,16 +72,16 @@ TEST_F(ScoutVhalTest, GetHistoricSpeed) {
     // Set bunch of new speeds and get a speed for a timestamp
     // that's larger than the last timestamp in the index. Since
     // it doesn't exists, it should return the last entry
-    auto now_seconds = []() -> uint64_t {
-        using namespace std;
-        return chrono::duration_cast<chrono::seconds>(chrono::system_clock::now().time_since_epoch()).count();
+    auto now_us = []() -> uint64_t {
+        using namespace std::chrono;
+        return duration_cast<microseconds>(system_clock::now().time_since_epoch()).count();
     };
     std::vector<uint8_t> speeds = {10, 20, 30};
     for (uint8_t speed : speeds) {
         int rc = scout_vhal_->SetSpeed(speed);
         EXPECT_EQ(rc, 0);
     }
-    rc = scout_vhal_->GetHistoricSpeed(now_seconds(), speed_kmh);
+    rc = scout_vhal_->GetHistoricSpeed(now_us(), speed_kmh);
     EXPECT_EQ(rc, 0);
     EXPECT_EQ(speed_kmh, speeds[speeds.size() - 1]);
 }

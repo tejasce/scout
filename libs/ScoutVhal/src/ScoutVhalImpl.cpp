@@ -64,7 +64,7 @@ int ScoutVhalImpl::SetSpeed(uint8_t speed_kmh) {
     }
 
     string entry = "entry" + to_string(entry_count_++);
-    uint64_t timestamp = now_seconds();
+    uint64_t timestamp = now_us();
     cc_json_[entry]["timestamp"] = timestamp;
     cc_json_[entry]["speed_kmh"] = speed_kmh;
     ts_idx_.Set(timestamp, speed_kmh);
