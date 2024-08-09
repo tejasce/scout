@@ -2,7 +2,8 @@ DOCKERFILE := $(TOPDIR)/buildtools/Dockerfile.buildenv
 IMAGE_NAME := scout_motors
 CONTAINER_NAME := $(IMAGE_NAME)$(subst /,.,$(subst $(HOME),,$(TOPDIR)))
 DOCKER_CMD := DOCKER_BUILDKIT=1 docker
-BASE_ARCH = $(shell gcc -dumpmachine | awk -F- '{print $1}')
+# Following works as long as gnu make is used (on Mac, that'd be installed using brew)
+BASE_ARCH := $(shell gcc -dumpmachine | awk -F- '{print $$1}')
 
 THIS_USER := $(shell whoami)
 THIS_GROUP := $(shell id -gn "$(THIS_USER)")
