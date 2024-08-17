@@ -13,14 +13,15 @@ RUN apt-get update && \
         cmake \
 	curl \
         docker.io \
-	g++ \
         git \
         git-lfs \
         jq \
+        libssl-dev \
         libtool \
         libusb-1.0 \
         lsb-release \
         make \
+        pkg-config \
         python3-pip \
         sudo \
 	unzip \
@@ -38,6 +39,21 @@ ENV BAZEL_VER 7.1.0
 RUN wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VER}/bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} && \
     chmod +x bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} && \
     mv bazel-${BAZEL_VER}-linux-${BAZEL_ARCH} /usr/local/bin/bazel
+
+# rust and cargo
+ENV CARGO_HOME=/usr/local/cargo
+ENV RUSTUP_HOME=$CARGO_HOME
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    . $CARGO_HOME/env && \
+    cargo install cargo-raze && \
+    if [ "$(uname -m)" = "x86_64" ]; then \
+        rustup target add aarch64-unknown-linux-gnu; \
+    fi; \
+    rustup target add arm-unknown-linux-gnueabihf
+
+
+# Global buildenv wide settings
+ENV PATH=$CARGO_HOME/bin:$PATH
 
 # Add "this" user to buildenv image
 ARG USER
